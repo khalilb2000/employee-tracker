@@ -1,7 +1,9 @@
 const inquirer = require('inquirer');
 const Queries = require('./queries');
 
+// the statrt of function
 async function mainMenu(){
+// User action prompt
     const answer = await inquirer.createPromptModule([
         {
             type: 'list',
@@ -16,4 +18,16 @@ async function mainMenu(){
             ]
         }
     ])
+}
+
+switch (answer.choice){
+// Switching prompts
+    case 'View all departments':
+            viewAllDepartments();
+            break;   
+            
+               case 'Add a role':
+                viewAllRoles();
+                break;
+                
 }
