@@ -1,93 +1,90 @@
 // Importing modules
-const mysql = require('mysql')
+const mysql = require('mysql2')
 const inquirer = require('inquirer');
 const Queries = require('./queries');
 
 const connection = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'yourpassword',
+    password: ' ',
     database:'employee_db'
 });
 
-// the statrt of function
-async function mainMenu(){
-// User action prompt
-    const answer = await inquirer.prompt([
-        {
-            type: 'list',
-            name:'choice',
-            message:'What do you want to view?',
-            choices: [
-                'All departments',
-                'All roles',
-                'Add a role',
-                'Add a department',
-                'Exit ', //corrected 'quit' to 'exit'
-            ]
-        }
-    ])
-}
+// the statrt of mainMenu function
 
-switch (answer.choice){
-// Switching prompts
-    case 'View all departments':
-            viewAllDepartments();
-            break;   
-            
-               case 'Add a role':
-                viewAllRoles();
+async function mainMenu() {
+    try {
+        const answer = await inquirer.prompt([
+            {
+                type: 'list',
+                name: 'choice',
+                message:'What do you want to view?',
+                choices:[
+                    'View all departments',
+                    'View all roles',
+                    'Add a role',
+                    'Add a department',
+                    'Exit',
+                ]
+            }
+        ]);
+
+        switch (answer.choice){
+            case 'View all departments':
+                viewAllDepartments();
                 break;
 
-                case 'Exit':
-                    exitOption()
-                    console.log('Goodbye!');
-                    break; 
-                
+                case 'View all roles':
+                    viewAllRoles();
+                    break;
+
+                    case 'Add role':
+                        viewAddRoles();
+                        break;
+
+                        case 'Exit':
+                            exitOption();
+                            console.log('Goodbye!');
+                            break;
+        }
+    } catch (error) {
+        console.error('Error',error);
+        
+    }
 }
 
 async function viewAllDepartments(){
-    // Here I am adding a try catch function to ensure we see reason for error. 
-    try{
-        const [departments] = await Queries.getAllDepartments();
+    try {
+        const departments = await Queries.getAllDepartments();
         console.table(departments);
         mainMenu();
-
-    } catch (error){
-        console.error('Error fetching departments:', error);
+    } catch (error) {
+        console.error('Error fetching departments', error);
         mainMenu();
     }
 }
-
 async function viewAllRoles(){
-try {
-    const [roles] = await Queries.viewAllRoles
-} catch (error) {
-    console.error('Error fetching all roles:', error);
-    mainMenu();
-}
-
-}
-
-async function exitOption(){
-    try{
-        const[exit] = await Queries.Quit
-    } catch(error){
-        console.error('Error quitting application:', error);
+    try {
+        const departments = await Queries.getAllRoles();
+        console.table(departments);
         mainMenu();
+    } catch (error) {
+        console.error('Error getting roles',error);
+    }
+}
+async function viewAddRoles(){
+    try {
+        const departments = await Queries.getAddRoles();
+        console.table(departments);
+        mainMenu();
+    } catch (error) {
+        console.error('Error adding role',error);
+        
     }
 }
 
-
-
-
-
-
-
-
-
-
-
+// Start pf function
+mainMenu();
 
 
 
