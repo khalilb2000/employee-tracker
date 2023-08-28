@@ -74,7 +74,7 @@ async function viewAllRoles(){
 }
 async function viewAddRoles(){
     try {
-        const departments = await Queries.getAddRoles();
+        const departments = await Queries.AddRoles();
         console.table(departments);
         mainMenu();
     } catch (error) {
@@ -83,7 +83,19 @@ async function viewAddRoles(){
     }
 }
 
-// Start pf function
+async function exitOption(){
+    try {
+        const departments = await Queries.quit();
+        console.log('Goodbye!');
+        console.table(departments);
+        mainMenu()
+    } catch (error) {
+        console.error('Error quitting',error);
+    }
+};
+
+
+// Start of function
 mainMenu();
 
 
