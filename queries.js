@@ -1,4 +1,4 @@
-const connection = require('./db');
+const connection = require('db.js');
 
 class Queries {
     static getAllDepartments(){

@@ -87,7 +87,6 @@ async function exitOption(){
     try {
         const departments = await Queries.quit();
         console.log('Goodbye!');
-        console.table(departments);
         mainMenu()
     } catch (error) {
         console.error('Error quitting',error);
