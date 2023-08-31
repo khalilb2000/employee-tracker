@@ -35,12 +35,17 @@ async function mainMenu() {
                 viewAllDepartments();
                 break;
 
+                case 'Add department':
+                addDepartment();
+                break;
+
                 case 'View all roles':
                     viewAllRoles();
                     break;
 
                     case 'Add a role':
                         viewAddRole();
+                        
                         break;
 
                         case 'Exit':
@@ -64,6 +69,19 @@ async function viewAllDepartments(){
         mainMenu();
     }
 }
+
+async function viewAllRoles(){
+try {
+    const roles = await Queries.getAllRoles();
+    console.table(roles);
+    mainMenu();
+} catch (error) {
+    console.error('Error getting roles', error); 
+}
+
+}
+
+
 async function viewAddRole(){
 // Forgot to give add role actuall add role options so I fixed that, here are your differemt prompts and options.
 
@@ -87,13 +105,31 @@ async function viewAddRole(){
             message: 'Enter the department ID',
         },
 
-
+console.log('Role added!')
     
     ]);
     await Queries.addRole(roleData.title, roleData.salary, roleData.departmentId);
    } catch (error) {
     console.error('Error adding role', error);
+    
    }
+}
+
+async function addDepartment() {
+    try {
+        const departmentData = await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'departmentName',  // Use camelCase for the name
+                message: 'Please enter department name',
+            }
+        ]);
+
+        await Queries.addDepartment(departmentData.departmentName);  // Pass the department name to the function
+        console.log('Department added!');
+    } catch (error) {
+        console.error('Error adding department', error);
+    }
 }
 
 

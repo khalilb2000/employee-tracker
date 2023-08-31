@@ -2,6 +2,7 @@
 const connection = require('./db')
 
 class Queries {
+    
     static getAllDepartments() {
         return connection.promise().query('SELECT * FROM department');
     }
@@ -20,6 +21,12 @@ class Queries {
         const sql = 'INSERT INTO department (name) VALUES (?)';
         return connection.promise().query(sql, [name]);
     }
+
+    static quit(){
+        return connection.promise().end();
+    }
 }
+
+
 
 module.exports = Queries;
