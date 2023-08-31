@@ -5,10 +5,15 @@ CREATE DATABASE employee_db;
 USE employee_db;
 
 -- Create a table for departments
-CREATE TABLE department (
+CREATE TABLE departments (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL
 );
+
+-- Inserting department records
+INSERT INTO departments (name) VALUES ('HR');
+INSERT INTO departments (name) VALUES ('Engineering');
+-- Add more departments as needed
 
 -- Create a table for roles
 CREATE TABLE role (
@@ -16,8 +21,13 @@ CREATE TABLE role (
     title VARCHAR(255) NOT NULL,
     salary DECIMAL(10, 2) NOT NULL,
     department_id INT,
-    FOREIGN KEY (department_id) REFERENCES department(id)
+    FOREIGN KEY (department_id) REFERENCES departments(id)
 );
+
+-- Inserting role records
+INSERT INTO role (title, salary, department_id) VALUES ('Manager', 60000, 1);
+INSERT INTO role (title, salary, department_id) VALUES ('Software Engineer', 80000, 2);
+-- Add more role records as needed
 
 -- Create a table for employees
 CREATE TABLE employee (

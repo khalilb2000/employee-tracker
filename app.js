@@ -65,6 +65,8 @@ async function viewAllDepartments(){
     }
 }
 async function viewAddRole(){
+// Forgot to give add role actuall add role options so I fixed that, here are your differemt prompts and options.
+
    try {
     const roleData = await inquirer.prompt([
         {
