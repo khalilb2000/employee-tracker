@@ -32,19 +32,19 @@ async function mainMenu() {
 
         switch (answer.choice){
             case 'View all departments':
-                viewAllDepartments();
+               await viewAllDepartments();
                 break;
 
                 case 'Add department':
-                addDepartment();
+               await addDepartment();
                 break;
 
                 case 'View all roles':
-                    viewAllRoles();
+                     await viewAllRoles();
                     break;
 
                     case 'Add a role':
-                        viewAddRole();
+                       await viewAddRole();
                         
                         break;
 
@@ -105,12 +105,12 @@ async function viewAddRole(){
             message: 'Enter the department ID',
         },
 
-console.log('Role added!')
+
     
     ]);
     await Queries.addRole(roleData.title, roleData.salary, roleData.departmentId);
    } catch (error) {
-    console.error('Error adding role', error);
+    console.error('Error adding role:', 'Missing or invalid input. Please provide all required values.');
     
    }
 }
@@ -135,7 +135,7 @@ async function addDepartment() {
 
 async function exitOption(){
     try {
-        const departments = await Queries.quit();
+        
         console.log('Goodbye!');
         mainMenu()
     } catch (error) {
@@ -150,4 +150,3 @@ mainMenu();
 
 
 
-connection.end();
