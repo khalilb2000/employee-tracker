@@ -40,7 +40,7 @@ async function mainMenu() {
                     break;
 
                     case 'Add a role':
-                        viewAddRoles();
+                        viewAddRole();
                         break;
 
                         case 'Exit':
@@ -64,25 +64,36 @@ async function viewAllDepartments(){
         mainMenu();
     }
 }
-async function viewAllRoles(){
-    try {
-        const departments = await Queries.getAllRoles();
-        console.table(departments);
-        mainMenu();
-    } catch (error) {
-        console.error('Error getting roles',error);
-    }
-}
-async function viewAddRoles(){
-    try {
-        const departments = await Queries.AddRoles();
-        console.table(departments);
-        mainMenu();
-    } catch (error) {
-        console.error('Error adding role',error);
+async function viewAddRole(){
+   try {
+    const roleData = await inquirer.prompt([
+        {
+            type: 'input',
+            name: 'title',
+            message: 'Enter the role title',
+        },
         
-    }
+        {
+            type: 'input',
+            name: 'salary',
+            message: 'Enter the role salary',
+        },
+
+        {
+            type: 'input',
+            name: 'departmentId',
+            message: 'Enter the department ID',
+        },
+
+
+    
+    ]);
+    await Queries.addRole(roleData.title, roleData.salary, roleData.departmentId);
+   } catch (error) {
+    console.error('Error adding role', error);
+   }
 }
+
 
 async function exitOption(){
     try {
