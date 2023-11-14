@@ -7,10 +7,14 @@ const database = require('./db');
 const connection = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: ' ',
-    database:'employee_db'
-});
-
+    password: 'Durant35', 
+    database: 'employee_db',
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+ });
+ 
+const promiseConnection = connection.promise();
 // the statrt of mainMenu function
 
 async function mainMenu() {
@@ -54,7 +58,7 @@ async function mainMenu() {
                             break;
         }
     } catch (error) {
-        console.error('Error',error);
+        console.error('Error getting roles',error.message, error);
         
     }
 }
@@ -133,15 +137,14 @@ async function addDepartment() {
 }
 
 
-async function exitOption(){
+async function exitOption() {
     try {
-        
         console.log('Goodbye!');
-        mainMenu()
+        await Queries.quit();
     } catch (error) {
-        console.error('Error quitting',error);
+        console.error('Error quitting', error);
     }
-};
+}
 
 
 // Start of function
