@@ -1,22 +1,13 @@
 // Importing modules
-const mysql = require('mysql2')
+const mysql = require('mysql2');
 const inquirer = require('inquirer');
 const Queries = require('./queries');
-const database = require('./db');
+const connection = require('./db');
 
-const connection = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'Durant35', 
-    database: 'employee_db',
-    waitForConnections: true,
-    connectionLimit: 10,
-    queueLimit: 0
- });
- 
-const promiseConnection = connection.promise();
+// Use the connection object directly if it's a promise-based pool
+const promiseConnection = connection;
 
-// The start of mainMenu function
+// Start of mainMenu function
 async function mainMenu() {
     try {
         const answer = await inquirer.prompt([
@@ -30,8 +21,8 @@ async function mainMenu() {
                     'Add a role',
                     'Add a department',
                     'Exit',
-                ]
-            }
+                ],
+            },
         ]);
 
         switch (answer.choice) {
@@ -57,31 +48,35 @@ async function mainMenu() {
                 break;
         }
     } catch (error) {
-        console.error('Error getting roles', error.message, error);
+        console.error('Error in mainMenu:', error.message, error);
     }
 }
 
+// Function to view all departments
 async function viewAllDepartments() {
     try {
         const departments = await Queries.getAllDepartments();
         console.table(departments);
         mainMenu();
     } catch (error) {
-        console.error('Error fetching departments', error);
+        console.error('Error fetching departments:', error.message, error);
         mainMenu();
     }
 }
 
+// Function to view all roles
 async function viewAllRoles() {
     try {
         const roles = await Queries.getAllRoles();
         console.table(roles);
         mainMenu();
     } catch (error) {
-        console.error('Error getting roles', error);
+        console.error('Error getting roles:', error.message, error);
+        mainMenu();
     }
 }
 
+// Function to add a role
 async function viewAddRole() {
     try {
         const roleData = await inquirer.prompt([
@@ -107,31 +102,33 @@ async function viewAddRole() {
     }
 }
 
+// Function to add a department
 async function addDepartment() {
     try {
         const departmentData = await inquirer.prompt([
             {
                 type: 'input',
-                name: 'departmentName',  // Use camelCase for the name
+                name: 'departmentName',
                 message: 'Please enter department name',
-            }
+            },
         ]);
 
         await Queries.addDepartment(departmentData.departmentName);
         console.log('Department added!');
     } catch (error) {
-        console.error('Error adding department', error);
+        console.error('Error adding department:', error.message, error);
     }
 }
 
+// Function to exit the application
 async function exitOption() {
     try {
         console.log('Goodbye!');
         await Queries.quit();
     } catch (error) {
-        console.error('Error quitting', error);
+        console.error('Error quitting:', error.message, error);
     }
 }
 
-// Start of function
+// Start of the application
 mainMenu();
