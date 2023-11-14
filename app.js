@@ -15,16 +15,16 @@ const connection = mysql.createPool({
  });
  
 const promiseConnection = connection.promise();
-// the statrt of mainMenu function
 
+// The start of mainMenu function
 async function mainMenu() {
     try {
         const answer = await inquirer.prompt([
             {
                 type: 'list',
                 name: 'choice',
-                message:'What do you want to view?',
-                choices:[
+                message: 'What do you want to view?',
+                choices: [
                     'View all departments',
                     'View all roles',
                     'Add a role',
@@ -34,36 +34,34 @@ async function mainMenu() {
             }
         ]);
 
-        switch (answer.choice){
+        switch (answer.choice) {
             case 'View all departments':
-               await viewAllDepartments();
+                await viewAllDepartments();
                 break;
 
-                case 'Add department':
-               await addDepartment();
+            case 'Add department':
+                await addDepartment();
                 break;
 
-                case 'View all roles':
-                     await viewAllRoles();
-                    break;
+            case 'View all roles':
+                await viewAllRoles();
+                break;
 
-                    case 'Add a role':
-                       await viewAddRole();
-                        
-                        break;
+            case 'Add a role':
+                await viewAddRole();
+                break;
 
-                        case 'Exit':
-                            exitOption();
-                            console.log('Goodbye!');
-                            break;
+            case 'Exit':
+                exitOption();
+                console.log('Goodbye!');
+                break;
         }
     } catch (error) {
-        console.error('Error getting roles',error.message, error);
-        
+        console.error('Error getting roles', error.message, error);
     }
 }
 
-async function viewAllDepartments(){
+async function viewAllDepartments() {
     try {
         const departments = await Queries.getAllDepartments();
         console.table(departments);
@@ -74,49 +72,39 @@ async function viewAllDepartments(){
     }
 }
 
-async function viewAllRoles(){
-try {
-    const roles = await Queries.getAllRoles();
-    console.table(roles);
-    mainMenu();
-} catch (error) {
-    console.error('Error getting roles', error); 
+async function viewAllRoles() {
+    try {
+        const roles = await Queries.getAllRoles();
+        console.table(roles);
+        mainMenu();
+    } catch (error) {
+        console.error('Error getting roles', error);
+    }
 }
 
-}
-
-
-async function viewAddRole(){
-// Forgot to give add role actuall add role options so I fixed that, here are your differemt prompts and options.
-
-   try {
-    const roleData = await inquirer.prompt([
-        {
-            type: 'input',
-            name: 'title',
-            message: 'Enter the role title',
-        },
-        
-        {
-            type: 'input',
-            name: 'salary',
-            message: 'Enter the role salary',
-        },
-
-        {
-            type: 'input',
-            name: 'departmentId',
-            message: 'Enter the department ID',
-        },
-
-
-    
-    ]);
-    await Queries.addRole(roleData.title, roleData.salary, roleData.departmentId);
-   } catch (error) {
-    console.error('Error adding role:', 'Missing or invalid input. Please provide all required values.');
-    
-   }
+async function viewAddRole() {
+    try {
+        const roleData = await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'title',
+                message: 'Enter the role title',
+            },
+            {
+                type: 'input',
+                name: 'salary',
+                message: 'Enter the role salary',
+            },
+            {
+                type: 'input',
+                name: 'departmentId',
+                message: 'Enter the department ID',
+            },
+        ]);
+        await Queries.addRole(roleData.title, roleData.salary, roleData.departmentId);
+    } catch (error) {
+        console.error('Error adding role:', 'Missing or invalid input. Please provide all required values.');
+    }
 }
 
 async function addDepartment() {
@@ -129,13 +117,12 @@ async function addDepartment() {
             }
         ]);
 
-        await Queries.addDepartment(departmentData.departmentName);  // Pass the department name to the function
+        await Queries.addDepartment(departmentData.departmentName);
         console.log('Department added!');
     } catch (error) {
         console.error('Error adding department', error);
     }
 }
-
 
 async function exitOption() {
     try {
@@ -146,10 +133,5 @@ async function exitOption() {
     }
 }
 
-
 // Start of function
 mainMenu();
-
-
-
-
